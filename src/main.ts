@@ -1,10 +1,14 @@
 // import { Application, Sprite, Rectangle, AnimatedSprite, Texture, Loader } from 'pixi.js'
 import {Application, AnimatedSprite, Texture, Sprite, Resource } from 'pixi.js'
 import { keyboard } from './keyboard'
+import { Game, GameOptions } from './game/game';
+import { Character } from './character/character';
+
+const game = new Game(600, 400)
 
 const app = new Application<HTMLCanvasElement>({ 
-  width: 600,
-  height: 400,                       
+  width: game.width,
+  height: game.height,
   antialias: true,
   resolution: 1,
   backgroundAlpha: 0.1
@@ -12,11 +16,15 @@ const app = new Application<HTMLCanvasElement>({
 
 document.body.appendChild(app.view);
 
+const options = new GameOptions(10, 5)
+const { charHps, charSpeed } = options
+
 const IDLE_FRAMES_COUNT = 4
-const CHAR_SIZE = 84
-const LEFT_FRAMES_COUNT = 6
-const RIGHT_FRAMES_COUNT = 6
-const INIT_POSITION = [app.screen.width / 2 - CHAR_SIZE  / 2, app.screen.height - CHAR_SIZE]
+const CHAR_WIDTH = 50
+const CHAR_HEIGHT = 70
+const LEFT_FRAMES_COUNT = 5
+const RIGHT_FRAMES_COUNT = 5
+const INIT_POSITION = [app.screen.width / 2 - CHAR_WIDTH  / 2, app.screen.height - CHAR_HEIGHT]
 
 const idleFrames: Texture<Resource>[] = []
 const rightFrames: Texture<Resource>[] = []
@@ -34,11 +42,7 @@ for (let i = 0; i < LEFT_FRAMES_COUNT; i++) {
   leftFrames.push(Texture.from(`character/char_run_left_${i}.png`));
 }
 
-let catcher = new AnimatedSprite(idleFrames);
-catcher.x = INIT_POSITION[0]
-catcher.y = INIT_POSITION[1];
-catcher.anchor.set(0.0);
-catcher.animationSpeed = 0.15
+const catcher = new Character(CHAR_WIDTH, CHAR_HEIGHT, INIT_POSITION[0], INIT_POSITION[1], idleFrames, charSpeed, charHps)
 
 const apple = new Sprite(Texture.from('food/Apple.png'))
 
@@ -51,46 +55,46 @@ const left = keyboard("ArrowLeft")
 const right = keyboard("ArrowRight")
 
 right.press = () => {  
-  catcher.x += 10
+  catcher.moveX(catcher.coordinates.x + charSpeed, game.width)
 }
 
 left.press = () => {  
-  catcher.x -= 10
+  catcher.moveX(catcher.coordinates.x - charSpeed, game.width)
 }
 
-let prevCharPosition = catcher.x
+let prevCharPosition = catcher.coordinates.x
 
 app.ticker.add(delta => {
 
-
-  if (catcher.x > prevCharPosition) {
-    catcher.textures = rightFrames
+  if (catcher.coordinates.x > prevCharPosition) {
+    catcher.frames = rightFrames
   }
 
-  else if (catcher.x < prevCharPosition) {
-    catcher.textures = leftFrames
+  else if (catcher.coordinates.x < prevCharPosition) {
+    catcher.frames = leftFrames
   }
   else {
-    catcher.textures = idleFrames
+    catcher.frames = idleFrames
   }
 
   elapsed += delta
 
   if (elapsed > 4) {
     apple.y += 5
-    const nextFrame = catcher.currentFrame + 1
-    // catcher.gotoAndPlay(nextFrame < IDLE_FRAMES_COUNT ? nextFrame : 0);
-    catcher.texture = catcher.textures[nextFrame < IDLE_FRAMES_COUNT ? nextFrame : 0]
-    prevCharPosition = catcher.x
+    const nextFrame = catcher.frame + 1
+    catcher.frame = nextFrame < IDLE_FRAMES_COUNT ? nextFrame : 0
+    catcher.setTexture()
     elapsed = 0.0
 
-    app.stage.addChild(catcher);
-
+    app.stage.addChild(catcher.sprite);
     app.stage.addChild(apple);
 
-    if (apple.y + apple.height > catcher.y && apple.x < catcher.x + catcher.width / 2 && apple.x + apple.width > catcher.x) 
-    {
-      console.log('collision!')
-    }
+    if (apple.y + apple.height > catcher.coordinates.y 
+      && apple.x < catcher.coordinates.x + catcher.size[0] / 2 
+      && apple.x + apple.width > catcher.coordinates.x
+    ) {
+        console.log('collision!')
+      }
+      prevCharPosition = catcher.coordinates.x
   }
 });
