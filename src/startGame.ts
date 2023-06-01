@@ -4,9 +4,9 @@ import { Game } from './game/Game';
 import { Character } from './objects/Character';
 import { GameOptions } from './game/GameOptions';
 import { IDLE_FRAMES_COUNT, checkCollision, idleFrames } from './utils'
-import { DifficultyLevel } from './types/DifficultyLevel'
-import { byId } from './utils/htmlUtils';
-import { Diet } from './types/Diet';
+import { DifficultyLevel } from './interfaces/DifficultyLevel'
+import { byId, parseHps } from './utils/htmlUtils';
+import { Diet } from './interfaces/Diet';
 
 export const startGame = ({ difficulty, diet }: {difficulty: DifficultyLevel, diet: Diet}) => {
 
@@ -83,7 +83,7 @@ export const startGame = ({ difficulty, diet }: {difficulty: DifficultyLevel, di
               byId('points').innerText = String(game.score)
             } else {
               catcher.removeHp()
-              byId('hps').innerText = String(catcher.hps)
+              byId('hps').innerText = parseHps(catcher.hps)
             }
           }
       })

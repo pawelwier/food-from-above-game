@@ -1,4 +1,4 @@
-import { DifficultyLevel } from "../types/DifficultyLevel";
+import { DifficultyLevel } from "../interfaces/DifficultyLevel";
 
 export const difficultyLevels: DifficultyLevel[] = [{
   id: 0,

@@ -4,21 +4,32 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="./styles.css" /> 
   <title>Food From Above</title>
 </head>
 <body>
   <div id="pre-game-menu">
-    <div id="difficulty-select"></div>
-    <br>
-    <br>
-    <div id="diet-select"></div>
-    <button disabled id="start">Start</button>
+    <div class="pre-game-menu-item">
+      <div class="pre-game-menu-label">Choose your difficulty level:</div>
+      <div class="pre-game-select" id="difficulty-select"></div>
+    </div>
+    <div class="pre-game-menu-item">
+      <div class="pre-game-menu-label">Choose your diet:</div>
+      <div class="pre-game-select" id="diet-select"></div>
+    </div>
+    <button disabled id="start-button">Start</button>
   </div>
   <div id="game-menu" style="display: none;">
-    Points: <span id="points"></span>
-    HPs: <span id="hps"></span>
+    <div class="game-stats-container">
+      <div class="game-stats">
+        Score: <span id="points"></span>
+      </div>
+      <div class="game-stats">
+        <span id="hps"></span>
+      </div>
+    </div>
+    <div id="app"></div>
   </div>
-  <div id="app"></div>
   <script src="./dist/main.js"></script>
 </body>
 </html>

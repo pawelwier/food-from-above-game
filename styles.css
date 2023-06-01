@@ -1,0 +1,99 @@
+:root {
+  --primary-color: #a83c0d;
+  --secondary-color: #204a15
+}
+
+body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.4rem;
+  line-height: 3rem;
+}
+
+input[type=radio] {
+  visibility: hidden;
+}
+
+input[type=radio]+label {
+  padding: 0.6rem 1.5rem;
+  border: 1px solid var(--primary-color);
+  border-radius: 0.4rem;
+  cursor: pointer;
+  color: var(--primary-color)
+}
+
+input[type=radio]:checked+label {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+button {
+  background-color: var(--secondary-color);
+  color: #fff;
+  font-size: 4rem;
+}
+
+input[type=radio]+label:hover, button:hover {
+  opacity: 0.8;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+#start-button {
+  padding: 2rem 9rem;
+  border-radius: 1.5rem;
+  cursor: pointer;
+}
+
+#pre-game-menu {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#points {
+  font-size: 3rem;
+}
+
+#hps {
+  color:#c92347  
+}
+
+.pre-game-menu-item {
+  margin-bottom: 2rem;
+}
+
+.pre-game-menu-label {
+  font-size: 1.6rem;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.pre-game-select {
+  margin-left: -1.3rem;
+}
+
+.game-stats-container {
+  display: grid;
+  grid-template-columns: 12rem 20rem;
+  gap: 4rem;
+}
+
+.game-stats-container div {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem
+}
+
+.game-stats {
+  text-transform: uppercase;
+}

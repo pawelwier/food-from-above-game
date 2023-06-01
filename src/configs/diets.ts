@@ -1,9 +1,9 @@
-import { Diet } from "../types/Diet";
+import { Diet } from "../interfaces/Diet";
 
 export const diets: Diet[] = [{
   id: 0,
   name: 'All',
-  indexList: []
+  indexList: Array.from({ length: 64 }).map((_, i) => i)
 }, {
   id: 1,
   name: 'Sushi',

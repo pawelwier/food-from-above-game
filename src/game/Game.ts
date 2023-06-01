@@ -1,6 +1,6 @@
 import { GameState } from "../enum/GameState"
 import { FoodItem } from "../objects/FoodItem"
-import { Diet } from "../types/Diet"
+import { Diet } from "../interfaces/Diet"
 import { getRandom } from "../utils"
 import { GameOptions } from "./GameOptions"
 

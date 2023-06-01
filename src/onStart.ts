@@ -1,7 +1,7 @@
 import { startGame } from "./startGame"
-import { Diet } from "./types/Diet"
-import { DifficultyLevel } from "./types/DifficultyLevel"
-import { byId } from "./utils/htmlUtils"
+import { Diet } from "./interfaces/Diet"
+import { DifficultyLevel } from "./interfaces/DifficultyLevel"
+import { byId, parseHps } from "./utils/htmlUtils"
 
 export const onStart = ({ difficulty, diet }: { difficulty: DifficultyLevel, diet: Diet }): void => {
   const INIT_SCORE = 0 // TODO: move out
@@ -13,7 +13,7 @@ export const onStart = ({ difficulty, diet }: { difficulty: DifficultyLevel, die
   gameMenu.style.display = 'block'
 
   byId('points').innerText = String(INIT_SCORE)
-  byId('hps').innerText = String(difficulty.hps)
+  byId('hps').innerText = parseHps(difficulty.hps)
 
   startGame({ difficulty, diet })
 }

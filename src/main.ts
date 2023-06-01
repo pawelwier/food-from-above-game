@@ -1,24 +1,27 @@
-import { DifficultyLevel } from './types/DifficultyLevel';
-import { renderDifficultySelect } from './renderDifficultySelect';
+import { DifficultyLevel } from './interfaces/DifficultyLevel';
 import { onStart } from './onStart';
-import { renderDietSelect } from './renderDietSelect';
-import { Diet } from './types/Diet';
-import { byId } from './utils/htmlUtils';
+import { Diet } from './interfaces/Diet';
+import { byId, renderRadioSelect } from './utils/htmlUtils';
 import { difficultyLevels } from './configs/difficultyLevels';
 import { diets } from './configs/diets';
 
-renderDifficultySelect()
-renderDietSelect()
-
-const startButton = byId('start') as HTMLButtonElement
-const difficultySelect = byId('difficulty-select') as HTMLFieldSetElement
-const dietSelect = byId('diet-select') as HTMLFieldSetElement
+const difficultySelect = byId('difficulty-select') as HTMLElement
+const dietSelect = byId('diet-select') as HTMLElement
+const startButton = byId('start-button') as HTMLButtonElement
 
 let difficulty: DifficultyLevel
 let diet: Diet
 
+renderRadioSelect({ 
+  element: difficultySelect, items: difficultyLevels, title: 'difficulty-level' 
+})
+renderRadioSelect({ 
+  element: dietSelect, items: diets, title: 'diet' 
+})
+
 const readyToStart = () => (difficulty && diet)
 
+// TODO: extract as utils
 difficultySelect.addEventListener('change', () => { 
   const levelElements = Array.from(document.getElementsByName("difficulty-level")) as HTMLInputElement[]
   const selectedLevelId: string = levelElements.find(r => r.checked).value
