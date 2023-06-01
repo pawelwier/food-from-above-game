@@ -1,19 +1,18 @@
 import { Resource, Sprite, Texture } from "pixi.js";
-import { Coords } from "../types/Coordinates";
+import { Coordinates } from "../types/Coordinates";
 import { Size } from "../types/Size";
 import { Direction } from "../enum/Direction";
-import { Game } from "../game/game";
+import { idleFrames, leftFrames, rightFrames } from "../utils";
 
 export class Character {
   size: Size
-  coordinates: Coords
+  coordinates: Coordinates
   frames: Texture<Resource>[]
   frame: number
   speed: number
   hps: number
   velocity: number
   scale: number
-  // updateTime: number
   animationSpeed: number
   anchor: number
   texture: Texture<Resource>
@@ -43,5 +42,15 @@ export class Character {
   moveX(destX: number, screenWidth: number) {
     if (destX > 0 && destX < screenWidth - this.size.width)
     this.coordinates.x = destX
+  }
+
+  getSpriteset(prevCharPosition: number) {
+    this.frames = this.coordinates.x > prevCharPosition 
+      ? rightFrames : this.coordinates.x < prevCharPosition
+        ? leftFrames : idleFrames
+  }
+
+  removeHp(hpCount: number = 1) {
+    this.hps -= hpCount
   }
 }

@@ -4,9 +4,20 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fruit from above</title>
+  <title>Food From Above</title>
 </head>
 <body>
+  <div id="pre-game-menu">
+    <div id="difficulty-select"></div>
+    <br>
+    <br>
+    <div id="diet-select"></div>
+    <button disabled id="start">Start</button>
+  </div>
+  <div id="game-menu" style="display: none;">
+    Points: <span id="points"></span>
+    HPs: <span id="hps"></span>
+  </div>
   <div id="app"></div>
   <script src="./dist/main.js"></script>
 </body>
