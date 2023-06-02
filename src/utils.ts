@@ -2,6 +2,7 @@ import { Resource, Texture } from "pixi.js"
 import { Character } from "./objects/Character"
 import { FoodItem } from "./objects/FoodItem"
 
+// move to character properties
 export const IDLE_FRAMES_COUNT = 4
 export const LEFT_FRAMES_COUNT = 5
 export const RIGHT_FRAMES_COUNT = 5

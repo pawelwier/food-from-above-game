@@ -1,21 +1,23 @@
-import { DifficultyLevel } from './interfaces/DifficultyLevel';
-import { onStart } from './onStart';
-import { Diet } from './interfaces/Diet';
-import { byId, renderRadioSelect } from './utils/htmlUtils';
-import { difficultyLevels } from './configs/difficultyLevels';
-import { diets } from './configs/diets';
+import { DifficultyLevel } from './interfaces/DifficultyLevel'
+import { onStart } from './onStart'
+import { Diet } from './interfaces/Diet'
+import { difficultyLevels } from './configs/difficultyLevels'
+import { diets } from './configs/diets'
+import { HtmlService } from './services/HtmlService'
 
-const difficultySelect = byId('difficulty-select') as HTMLElement
-const dietSelect = byId('diet-select') as HTMLElement
-const startButton = byId('start-button') as HTMLButtonElement
+const htmlService = new HtmlService()
+
+const difficultySelect = htmlService.byId('difficulty-select') as HTMLElement
+const dietSelect = htmlService.byId('diet-select') as HTMLElement
+const startButton = htmlService.byId('start-button') as HTMLButtonElement
 
 let difficulty: DifficultyLevel
 let diet: Diet
 
-renderRadioSelect({ 
+htmlService.renderRadioSelect({ 
   element: difficultySelect, items: difficultyLevels, title: 'difficulty-level' 
 })
-renderRadioSelect({ 
+htmlService.renderRadioSelect({ 
   element: dietSelect, items: diets, title: 'diet' 
 })
 

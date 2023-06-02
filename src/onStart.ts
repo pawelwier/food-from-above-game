@@ -1,19 +1,21 @@
 import { startGame } from "./startGame"
 import { Diet } from "./interfaces/Diet"
 import { DifficultyLevel } from "./interfaces/DifficultyLevel"
-import { byId, parseHps } from "./utils/htmlUtils"
+import { HtmlService } from "./services/HtmlService"
+import { BASE } from "./configs/base"
 
 export const onStart = ({ difficulty, diet }: { difficulty: DifficultyLevel, diet: Diet }): void => {
-  const INIT_SCORE = 0 // TODO: move out
+  const htmlService = new HtmlService()
 
-  const preGameMenu: HTMLElement = byId('pre-game-menu')
+  const preGameMenu: HTMLElement = htmlService.byId('pre-game-menu')
   preGameMenu.style.display = 'none'
 
-  const gameMenu: HTMLElement = byId('game-menu')
+  const gameMenu: HTMLElement = htmlService.byId('game-menu')
   gameMenu.style.display = 'block'
 
-  byId('points').innerText = String(INIT_SCORE)
-  byId('hps').innerText = parseHps(difficulty.hps)
+  htmlService.byId('points').innerText = String(BASE.initScore)
+  htmlService.byId('level').innerText = String(BASE.initLevel)
+  htmlService.byId('hps').innerText = htmlService.parseHps(difficulty.hps)
 
   startGame({ difficulty, diet })
 }

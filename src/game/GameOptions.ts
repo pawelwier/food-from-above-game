@@ -1,19 +1,21 @@
-import { Coordinates } from "../types/Coordinates"
+import { BASE } from "../configs/base"
 
 export class GameOptions {
   width: number
   height: number
-  charSpeed: number
+  itemSpeed: number
   charHps: number
-  // spriteRowsCols: Coordinates
-  pointsRatio: number
+  pointsPerCatch: number
   
   constructor(screenWidth: number, screenHeight: number, speed: number, hps: number, ratio: number) {
     this.width = screenWidth
     this.height = screenHeight
-    this.charSpeed = speed
+    this.itemSpeed = speed
     this.charHps = hps
-    // this.spriteRowsCols = { x: 8, y: 8 }
-    this.pointsRatio = ratio
+    this.pointsPerCatch = BASE.pointsBase * ratio
+  }
+
+  newLevel() {
+    this.itemSpeed = Math.floor(this.itemSpeed * 1.2)
   }
 }
