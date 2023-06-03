@@ -24,4 +24,6 @@ export interface GameInterface {
   listenToKeyEvents(): void
   checkCollision(item: FoodItem): boolean
   itemLost(item: FoodItem): boolean
+  caughtItemCount(): number
+  handleItemOut(caught: boolean): void
 }

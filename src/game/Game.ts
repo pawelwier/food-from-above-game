@@ -9,7 +9,6 @@ import { HtmlServiceInterface } from "../interfaces/services/HtmlServiceInterfac
 import { DifficultyLevel } from "../interfaces/DifficultyLevel"
 import { GameInterface } from "../interfaces/GameInterface"
 
-// TODO: add interfaces to classes
 export class Game implements GameInterface {
   state: GameState
   catcher: Character
@@ -29,7 +28,7 @@ export class Game implements GameInterface {
     this.level = 1
     this.caughtThisLevel = 0
     this.itemsPerLevel = BASE.itemsPerLevel
-    this.state = GameState.ready
+    this.state = GameState.running
     this.foodItems = []
     this.options = gameOptions
     this.catcher = character
@@ -105,7 +104,7 @@ export class Game implements GameInterface {
     this.state = GameState.over
     this.catcher.sprite.y += this.catcher.sprite.height
     this.catcher.sprite.rotation -= Math.PI / 2
-    this.htmlService.onGameOver(this)
+    this.htmlService.onGameOver({ score: this.score, level: this.level, items: this.caughtItemCount() })
   }
 
   listenToKeyEvents(): void {
@@ -123,5 +122,19 @@ export class Game implements GameInterface {
 
   itemLost(item: FoodItem): boolean {
     return item.coordinates.y > this.options.height - item.sprite.height
+  }
+
+  caughtItemCount(): number {
+    return (this.level - 1) * this.itemsPerLevel + this.caughtThisLevel
+  }
+
+  handleItemOut(caught: boolean): void {
+    if (caught) {
+      this.htmlService.byId('points').innerText = String(this.score)
+      this.htmlService.byId('level').innerText = String(this.level)
+    } else {
+      this.subtractCatcherHp()
+      this.htmlService.updateCatcherHps(this.catcher.hps)
+    }
   }
 }

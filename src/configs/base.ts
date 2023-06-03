@@ -9,5 +9,6 @@ export const BASE: BaseConfig = {
   initScore: 0,
   initLevel: 1,
   frameCount: 5,
-  itemInterval: 180
+  itemInterval: 180,
+  frameInterval: 3
 }

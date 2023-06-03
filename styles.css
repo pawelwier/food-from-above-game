@@ -91,7 +91,7 @@ button:disabled {
   font-size: 3rem;
 } 
 
-.menu-actions-button {
+#menu-button {
   font-size: 2rem;
   padding: 0.6rem 2.5rem;
 }
@@ -114,13 +114,13 @@ button:disabled {
   margin-left: -1.3rem;
 }
 
-.game-stats-container {
+#game-stats-container {
   display: grid;
   grid-template-columns: 10rem 13rem 7rem;
   gap: 3rem;
 }
 
-.game-stats-container div {
+#game-stats-container div {
   display: flex;
   align-items: center;
   gap: 0.7rem

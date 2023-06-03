@@ -8,8 +8,11 @@ import { BASE } from './configs/base';
 import { HtmlService } from './services/HtmlService';
 import { GameState } from './enum/GameState';
 
-export const startGame = ({ app, difficulty, diet }: { app: Application, difficulty: DifficultyLevel, diet: Diet }): void => {
+export const startGame = ({  difficulty, diet }: { difficulty: DifficultyLevel, diet: Diet }): void => {
   const htmlService = new HtmlService()
+
+  const app = htmlService.renderApp()
+
   const { hps, speed, pointsRatio } = difficulty
   const options = new GameOptions(BASE.screenWidth, BASE.screenHeight, speed, hps, pointsRatio, BASE.itemInterval)
   const catcher = new Character(options)
@@ -39,7 +42,7 @@ export const startGame = ({ app, difficulty, diet }: { app: Application, difficu
       itemInterval = 0.0
     }
   
-    if (elapsed > 3) {
+    if (elapsed > BASE.frameInterval) {
       game.catcher.setTexture()
       elapsed = 0.0
   
@@ -54,13 +57,7 @@ export const startGame = ({ app, difficulty, diet }: { app: Application, difficu
         if (caught || game.itemLost(item)) {
             app.stage.removeChild(item.sprite)
             game.removeItem({ item, caught })
-            if (caught) {
-              htmlService.byId('points').innerText = String(game.score)
-              htmlService.byId('level').innerText = String(game.level)
-            } else {
-              game.subtractCatcherHp()
-              htmlService.updateCatcherHps(game.catcher.hps)
-            }
+            game.handleItemOut(caught)
           }
       })
   

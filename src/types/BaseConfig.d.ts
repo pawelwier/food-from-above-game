@@ -8,4 +8,5 @@ export type BaseConfig = {
   initLevel: number
   frameCount: number
   itemInterval: number
+  frameInterval: number
 }

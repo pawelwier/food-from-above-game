@@ -1,5 +1,4 @@
-import { Application } from "pixi.js"
-import { backToMenu } from "../backToMenu"
+import { Application, ICanvas } from "pixi.js"
 import { diets } from "../configs/diets"
 import { difficultyLevels } from "../configs/difficultyLevels"
 import { Game } from "../game/Game"
@@ -37,13 +36,13 @@ export class HtmlService implements HtmlServiceInterface {
     this.byId('hps').innerText = this.parseHps(hps)
   }
 
-  onGameOver(game: Game): void {
+  onGameOver({ score, level, items }: { score: number, level: number, items: number }): void {
     this.byId('game-over-frame').style.display = 'block'
+    this.byId('game-score').innerText = String(score)
+    this.byId('game-level').innerText = String(level)
+    this.byId('game-items').innerText = String(items)
     this.byId('menu-button').addEventListener('click', () => {
-      backToMenu()
-    })
-    this.byId('restart-button').addEventListener('click', () => {
-      // startGame({ difficulty: game.difficulty, diet: game.diet })
+      this.backToMenu()
     })
   }
 
@@ -53,7 +52,7 @@ export class HtmlService implements HtmlServiceInterface {
     return data.find(({ id }) => String(id) === selectedLevelId)
   }
 
-  htmlInit(app: Application): void {
+  htmlInit(): void {
     const difficultySelect = this.byId('difficulty-select') as HTMLElement
     const dietSelect = this.byId('diet-select') as HTMLElement
     const startButton = this.byId('start-button') as HTMLButtonElement
@@ -81,7 +80,7 @@ export class HtmlService implements HtmlServiceInterface {
       if (readyToStart()) startButton.disabled = false
     })
 
-    startButton.addEventListener('click', () => startGame({ app, difficulty, diet }))
+    startButton.addEventListener('click', () => startGame({ difficulty, diet }))
   }
 
   onGameStart(game: Game): void {
@@ -91,8 +90,31 @@ export class HtmlService implements HtmlServiceInterface {
     const gameMenu: HTMLElement = this.byId('game-menu')
     gameMenu.style.visibility = 'visible'
   
+    this.byId('game-stats-container').style.display = 'grid'
     this.byId('points').innerText = String(BASE.initScore)
     this.byId('level').innerText = String(BASE.initLevel)
     this.byId('hps').innerText = this.parseHps(game.difficulty.hps)
+  }
+
+  backToMenu(): void {
+    const canvas = document.querySelector('canvas')
+    canvas?.remove()
+    this.byId('game-over-frame').style.display = 'none'
+    this.byId('game-stats-container').style.display = 'none'
+    this.byId('pre-game-menu').style.display = 'flex'
+  }
+
+  renderApp(): Application<ICanvas> {
+    const app = new Application<HTMLCanvasElement>({ 
+      width: BASE.screenWidth,
+      height: BASE.screenHeight,
+      antialias: true,
+      resolution: 1,
+      backgroundAlpha: 0.1
+    })
+    
+    document.body.appendChild(app.view);
+    
+    return app
   }
 }

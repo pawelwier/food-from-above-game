@@ -1,3 +1,6 @@
+import { Application } from "pixi.js"
+import { Game } from "../../game/Game"
+
 export interface HtmlServiceInterface {
   byId(id: string): HTMLElement
   renderRadioSelect({ element, items, title }: { 
@@ -5,7 +8,8 @@ export interface HtmlServiceInterface {
   }): void 
   parseHps(hps: number): string
   updateCatcherHps(hps: number): void
-  onGameOver(game: Game): void
-  htmlInit(app: Application): void
+  onGameOver({ score, level, items }: { score: number, level: number, items: number }): void
+  htmlInit(): void
   onGameStart(game: Game): void
+  renderApp(): Application<ICanvas>
 }
