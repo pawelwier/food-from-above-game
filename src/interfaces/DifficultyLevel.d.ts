@@ -1,4 +1,4 @@
-import { SelectableConfig } from "../interfaces/SelectableConfig"
+import { type SelectableConfig } from '../interfaces/SelectableConfig'
 
 export interface DifficultyLevel extends SelectableConfig {
   speed: number

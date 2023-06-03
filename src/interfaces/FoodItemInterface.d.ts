@@ -4,6 +4,6 @@ export interface FoodItemInterface {
   speed: number
   sprite: Sprite
 
-  createSprite(index: number): void
-  setSpriteLocation(speed: number): void
+  createSprite: (index: number) => void
+  setSpriteLocation: (speed: number) => void
 }

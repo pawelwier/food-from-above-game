@@ -1,4 +1,4 @@
-export type BaseConfig = {
+export interface BaseConfig {
   screenWidth: number
   screenHeight: number
   pointsBase: number

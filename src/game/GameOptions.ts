@@ -1,4 +1,4 @@
-import { BASE } from "../configs/base"
+import { BASE } from '../configs/base'
 
 export class GameOptions {
   width: number
@@ -7,8 +7,8 @@ export class GameOptions {
   charHps: number
   pointsPerCatch: number
   itemInterval: number
-  
-  constructor(screenWidth: number, screenHeight: number, speed: number, hps: number, ratio: number, interval: number) {
+
+  constructor (screenWidth: number, screenHeight: number, speed: number, hps: number, ratio: number) {
     this.width = screenWidth
     this.height = screenHeight
     this.itemSpeed = speed
@@ -17,7 +17,8 @@ export class GameOptions {
     this.itemInterval = BASE.itemInterval
   }
 
-  newLevel() {
+  newLevel (): void {
     this.itemSpeed = Math.floor(this.itemSpeed * 1.2)
+    this.itemInterval = Math.floor(this.itemInterval * 0.8)
   }
 }

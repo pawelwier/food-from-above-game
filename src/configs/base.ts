@@ -1,4 +1,4 @@
-import { BaseConfig } from "../types/BaseConfig";
+import { type BaseConfig } from '../types/BaseConfig'
 
 export const BASE: BaseConfig = {
   screenWidth: 600,

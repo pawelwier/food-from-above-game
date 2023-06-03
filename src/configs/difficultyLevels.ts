@@ -1,4 +1,4 @@
-import { DifficultyLevel } from "../interfaces/DifficultyLevel";
+import { type DifficultyLevel } from '../interfaces/DifficultyLevel'
 
 export const difficultyLevels: DifficultyLevel[] = [{
   id: 0,
@@ -16,6 +16,6 @@ export const difficultyLevels: DifficultyLevel[] = [{
   id: 2,
   name: 'BERSERKER!!!',
   speed: 25,
-  pointsRatio: 2,
-  hps: 2
+  pointsRatio: 2.5,
+  hps: 5
 }]

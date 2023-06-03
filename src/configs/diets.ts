@@ -1,4 +1,4 @@
-import { Diet } from "../interfaces/Diet";
+import { type Diet } from '../interfaces/Diet'
 
 export const diets: Diet[] = [{
   id: 0,

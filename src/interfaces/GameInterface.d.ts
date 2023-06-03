@@ -11,19 +11,19 @@ export interface GameInterface {
   difficulty: DifficultyLevel
   diet: Diet
 
-  addKeyListeners(): void
-  addFoodItem(diet: Diet): void
-  addToScore(): void
-  checkNewLevel(): void
-  checkAddHp(): void
-  onItemCaught(): void
-  removeItem({ item, caught }: { item: FoodItem, caught: boolean }): void
-  subtractCatcherHp(): void
-  isState(state: GameState): boolean
-  gameOver(): void
-  listenToKeyEvents(): void
-  checkCollision(item: FoodItem): boolean
-  itemLost(item: FoodItem): boolean
-  caughtItemCount(): number
-  handleItemOut(caught: boolean): void
+  addKeyListeners: () => void
+  addFoodItem: (diet: Diet) => void
+  addToScore: () => void
+  checkNewLevel: () => void
+  checkAddHp: () => void
+  onItemCaught: () => void
+  removeItem: ({ item, caught }: { item: FoodItem, caught: boolean }) => void
+  subtractCatcherHp: () => void
+  isState: (state: GameState) => boolean
+  gameOver: () => void
+  listenToKeyEvents: () => void
+  checkCollision: (item: FoodItem) => boolean
+  itemLost: (item: FoodItem) => boolean
+  caughtItemCount: () => number
+  handleItemOut: (caught: boolean) => void
 }
