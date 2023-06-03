@@ -11,6 +11,7 @@ export interface GameInterface {
   difficulty: DifficultyLevel
   diet: Diet
 
+  addKeyListeners(): void
   addFoodItem(diet: Diet): void
   addToScore(): void
   checkNewLevel(): void
@@ -20,4 +21,7 @@ export interface GameInterface {
   subtractCatcherHp(): void
   isState(state: GameState): boolean
   gameOver(): void
+  listenToKeyEvents(): void
+  checkCollision(item: FoodItem): boolean
+  itemLost(item: FoodItem): boolean
 }

@@ -22,6 +22,7 @@ export class Game implements GameInterface {
   htmlService: HtmlServiceInterface
   difficulty: DifficultyLevel
   diet: Diet
+  keyPressed: Record<string, boolean>
 
   constructor(gameOptions: GameOptions, character: Character, service: HtmlServiceInterface, difficultyLevel: DifficultyLevel, selectedDiet: Diet) {
     this.score = 0
@@ -35,6 +36,19 @@ export class Game implements GameInterface {
     this.htmlService = service
     this.difficulty = difficultyLevel
     this.diet = selectedDiet
+    this.keyPressed = {}
+
+    this.addKeyListeners()
+  }
+
+  addKeyListeners(): void {
+    window.addEventListener('keydown', (e: KeyboardEvent) => {
+      this.keyPressed[e.code] = true
+    })
+  
+    window.addEventListener('keyup', (e: KeyboardEvent) => {
+      this.keyPressed[e.code] = false
+    })
   }
 
   addFoodItem(diet: Diet): void {
@@ -92,5 +106,22 @@ export class Game implements GameInterface {
     this.catcher.sprite.y += this.catcher.sprite.height
     this.catcher.sprite.rotation -= Math.PI / 2
     this.htmlService.onGameOver(this)
+  }
+
+  listenToKeyEvents(): void {
+    if (this.keyPressed['ArrowRight']) { this.catcher.moveX(this.catcher.coordinates.x + this.catcher.speed, this.options.width) }
+    if (this.keyPressed['ArrowLeft']) { this.catcher.moveX(this.catcher.coordinates.x - this.catcher.speed, this.options.width) }
+  }
+
+  checkCollision(item: FoodItem): boolean {
+    return (
+      item.sprite.y + item.sprite.height > this.catcher.coordinates.y
+      && item.sprite.x < this.catcher.coordinates.x + this.catcher.size.width 
+      && item.sprite.x + item.sprite.width > this.catcher.coordinates.x
+    )
+  }
+
+  itemLost(item: FoodItem): boolean {
+    return item.coordinates.y > this.options.height - item.sprite.height
   }
 }

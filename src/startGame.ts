@@ -2,48 +2,20 @@ import { Application } from 'pixi.js'
 import { Game } from './game/Game';
 import { Character } from './objects/Character';
 import { GameOptions } from './game/GameOptions';
-import { IDLE_FRAMES_COUNT, checkCollision, idleFrames } from './utils'
 import { DifficultyLevel } from './interfaces/DifficultyLevel'
 import { Diet } from './interfaces/Diet';
 import { BASE } from './configs/base';
 import { HtmlService } from './services/HtmlService';
 import { GameState } from './enum/GameState';
 
-const htmlService = new HtmlService()
-
-export const startGame = ({ difficulty, diet }: { difficulty: DifficultyLevel, diet: Diet }): void => {
-
+export const startGame = ({ app, difficulty, diet }: { app: Application, difficulty: DifficultyLevel, diet: Diet }): void => {
+  const htmlService = new HtmlService()
   const { hps, speed, pointsRatio } = difficulty
-  
-  const options = new GameOptions(BASE.screenWidth, BASE.screenHeight, speed, hps, pointsRatio)
-  const { width, height } = options
-  
-  const app = new Application<HTMLCanvasElement>({ 
-    width: width,
-    height: height,
-    antialias: true,
-    resolution: 1,
-    backgroundAlpha: 0.1
-  })
-  
-  document.body.appendChild(app.view);
-
-  // TODO: move out
-  const keyPressed = {}
-  window.addEventListener('keydown', (e: KeyboardEvent) => {
-    keyPressed[e.code] = true
-  })
-
-  window.addEventListener('keyup', (e: KeyboardEvent) => {
-    keyPressed[e.code] = false
-  })
-  
-  const CHAR_WIDTH = 50
-  const CHAR_HEIGHT = 70
-  
-  const catcher = new Character(CHAR_WIDTH, CHAR_HEIGHT, idleFrames, options)
-  
+  const options = new GameOptions(BASE.screenWidth, BASE.screenHeight, speed, hps, pointsRatio, BASE.itemInterval)
+  const catcher = new Character(options)
   const game = new Game(options, catcher, htmlService, difficulty, diet)
+
+  htmlService.onGameStart(game)
 
   let elapsed = 0.0
   let itemInterval = 0.0
@@ -55,36 +27,31 @@ export const startGame = ({ difficulty, diet }: { difficulty: DifficultyLevel, d
       return
     }
 
-    if (keyPressed['ArrowRight']) { game.catcher.moveX(game.catcher.coordinates.x + game.catcher.speed, width) }
-    if (keyPressed['ArrowLeft']) { game.catcher.moveX(game.catcher.coordinates.x - game.catcher.speed, width) }
+    game.listenToKeyEvents()
   
     game.catcher.getSpriteset(prevCharPosition)
   
     elapsed += delta
     itemInterval += delta
   
-    if (itemInterval > 180 /* 3 seconds, TODO: make dynamic */) {
+    if (itemInterval > game.options.itemInterval) {
       game.addFoodItem(diet)
       itemInterval = 0.0
     }
   
     if (elapsed > 3) {
-      const nextFrame = game.catcher.frame + 1
-      game.catcher.frame = nextFrame < IDLE_FRAMES_COUNT ? nextFrame : 0 // TODO: move to function
       game.catcher.setTexture()
       elapsed = 0.0
   
       app.stage.addChild(game.catcher.sprite);
 
       game.foodItems.forEach(item => {
-        item.coordinates.y += game.options.itemSpeed
-        item.setTexture()
+        item.setSpriteLocation(game.options.itemSpeed)
         app.stage.addChild(item.sprite)
   
-        const caught = checkCollision({catcher: game.catcher, item})
+        const caught = game.checkCollision(item)
   
-        // take second param as separate function
-        if (caught || item.coordinates.y > game.options.height - item.sprite.height) {
+        if (caught || game.itemLost(item)) {
             app.stage.removeChild(item.sprite)
             game.removeItem({ item, caught })
             if (caught) {

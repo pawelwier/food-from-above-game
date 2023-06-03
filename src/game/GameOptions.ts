@@ -6,13 +6,15 @@ export class GameOptions {
   itemSpeed: number
   charHps: number
   pointsPerCatch: number
+  itemInterval: number
   
-  constructor(screenWidth: number, screenHeight: number, speed: number, hps: number, ratio: number) {
+  constructor(screenWidth: number, screenHeight: number, speed: number, hps: number, ratio: number, interval: number) {
     this.width = screenWidth
     this.height = screenHeight
     this.itemSpeed = speed
     this.charHps = hps
     this.pointsPerCatch = BASE.pointsBase * ratio
+    this.itemInterval = BASE.itemInterval
   }
 
   newLevel() {

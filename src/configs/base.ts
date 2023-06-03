@@ -8,4 +8,6 @@ export const BASE: BaseConfig = {
   characterSpeed: 7,
   initScore: 0,
   initLevel: 1,
+  frameCount: 5,
+  itemInterval: 180
 }

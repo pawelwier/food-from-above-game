@@ -27,7 +27,8 @@ export class FoodItem implements FoodItemInterface {
     this.sprite = new Sprite(food)
   }
 
-  setTexture(): void {
+  setSpriteLocation(speed: number): void {
+    this.coordinates.y += speed
     this.sprite.x = this.coordinates.x
     this.sprite.y = this.coordinates.y
   }

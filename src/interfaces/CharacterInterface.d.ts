@@ -13,6 +13,8 @@ export interface CharacterInterface {
   direction: Direction
   sprite: Sprite
 
+  loadTextures(): void
+  updateFrame(): void
   setTexture(): void
   moveX(destX: number, screenWidth: number): void
   getSpriteset(prevCharPosition: number): void

@@ -6,4 +6,6 @@ export type BaseConfig = {
   characterSpeed: number
   initScore: number
   initLevel: number
+  frameCount: number
+  itemInterval: number
 }

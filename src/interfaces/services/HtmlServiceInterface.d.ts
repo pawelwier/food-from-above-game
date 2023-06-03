@@ -6,4 +6,6 @@ export interface HtmlServiceInterface {
   parseHps(hps: number): string
   updateCatcherHps(hps: number): void
   onGameOver(game: Game): void
+  htmlInit(app: Application): void
+  onGameStart(game: Game): void
 }
