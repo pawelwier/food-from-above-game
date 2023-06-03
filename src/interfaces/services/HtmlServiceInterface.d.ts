@@ -5,4 +5,5 @@ export interface HtmlServiceInterface {
   }): void 
   parseHps(hps: number): string
   updateCatcherHps(hps: number): void
+  onGameOver(game: Game): void
 }

@@ -8,30 +8,62 @@
   <title>Food From Above</title>
 </head>
 <body>
-  <div id="pre-game-menu">
-    <div class="pre-game-menu-item">
-      <div class="pre-game-menu-label">Choose your difficulty level:</div>
-      <div class="pre-game-select" id="difficulty-select"></div>
-    </div>
-    <div class="pre-game-menu-item">
-      <div class="pre-game-menu-label">Choose your diet:</div>
-      <div class="pre-game-select" id="diet-select"></div>
-    </div>
-    <button disabled id="start-button">Start</button>
-  </div>
-  <div id="game-menu" style="display: none;">
-    <div class="game-stats-container">
-      <div class="game-stats">
-        Score: <span class="main-stats" id="points"></span>
+  <div id="main-container">
+    <div id="game-over-frame">
+      <div id="game-over-menu">
+        <div id="game-over-menu-header">
+          Game Over
+        </div>
+        <div id="game-over-menu-description"></div>
+        <div class="game-over-menu-actions">
+          <button
+            class="menu-actions-button"
+            id="menu-button"  
+          >
+            Back to menu
+          </button>
+          <button
+            class="menu-actions-button"
+            id="restart-button"  
+          >
+            Restart
+          </button>
+        </div>
       </div>
-      <div class="game-stats">
-        <span id="hps"></span>
-      </div>
-      <div class="game-stats">
-        Level: <span class="main-stats" id="level"></span>
-      </div>
     </div>
-    <div id="app"></div>
+    <div id="pre-game-menu">
+      <div class="pre-game-menu-item">
+        <div class="pre-game-menu-label">
+          Choose your difficulty level:
+        </div>
+        <div class="pre-game-select" id="difficulty-select"></div>
+      </div>
+      <div class="pre-game-menu-item">
+        <div class="pre-game-menu-label">
+          Choose your diet:
+        </div>
+        <div class="pre-game-select" id="diet-select"></div>
+      </div>
+      <button disabled id="start-button">
+        Start
+      </button>
+    </div>
+    <div id="game-menu" style="display: none;">
+      <div class="game-stats-container">
+        <div class="game-stats">
+          <span>Score:</span>
+          <span class="main-stats" id="points"></span>
+        </div>
+        <div class="game-stats">
+          <span id="hps"></span>
+        </div>
+        <div class="game-stats">
+          <span>Level:</span>
+          <span class="main-stats" id="level"></span>
+        </div>
+      </div>
+      <div id="app"></div>
+    </div>
   </div>
   <script src="./dist/main.js"></script>
 </body>

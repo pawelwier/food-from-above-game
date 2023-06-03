@@ -17,5 +17,5 @@ export const difficultyLevels: DifficultyLevel[] = [{
   name: 'BERSERKER!!!',
   speed: 25,
   pointsRatio: 2,
-  hps: 5
+  hps: 2
 }]

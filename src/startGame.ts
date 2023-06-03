@@ -7,15 +7,16 @@ import { DifficultyLevel } from './interfaces/DifficultyLevel'
 import { Diet } from './interfaces/Diet';
 import { BASE } from './configs/base';
 import { HtmlService } from './services/HtmlService';
+import { GameState } from './enum/GameState';
 
 const htmlService = new HtmlService()
 
-export const startGame = ({ difficulty, diet }: { difficulty: DifficultyLevel, diet: Diet }) => {
+export const startGame = ({ difficulty, diet }: { difficulty: DifficultyLevel, diet: Diet }): void => {
 
   const { hps, speed, pointsRatio } = difficulty
   
   const options = new GameOptions(BASE.screenWidth, BASE.screenHeight, speed, hps, pointsRatio)
-  const { charHps, width, height } = options
+  const { width, height } = options
   
   const app = new Application<HTMLCanvasElement>({ 
     width: width,
@@ -39,17 +40,20 @@ export const startGame = ({ difficulty, diet }: { difficulty: DifficultyLevel, d
   
   const CHAR_WIDTH = 50
   const CHAR_HEIGHT = 70
-  const INIT_POSITION = [app.screen.width / 2 - CHAR_WIDTH  / 2, app.screen.height - CHAR_HEIGHT]
   
-  const catcher = new Character(CHAR_WIDTH, CHAR_HEIGHT, INIT_POSITION[0], INIT_POSITION[1], idleFrames, BASE.characterSpeed, charHps)
+  const catcher = new Character(CHAR_WIDTH, CHAR_HEIGHT, idleFrames, options)
   
-  const game = new Game(options, catcher, htmlService)
+  const game = new Game(options, catcher, htmlService, difficulty, diet)
 
   let elapsed = 0.0
   let itemInterval = 0.0
   let prevCharPosition: number = game.catcher.coordinates.x
   
   app.ticker.add(delta => {
+    if (game.isState(GameState.over)) {
+      app.ticker.stop()
+      return
+    }
 
     if (keyPressed['ArrowRight']) { game.catcher.moveX(game.catcher.coordinates.x + game.catcher.speed, width) }
     if (keyPressed['ArrowLeft']) { game.catcher.moveX(game.catcher.coordinates.x - game.catcher.speed, width) }
@@ -71,7 +75,7 @@ export const startGame = ({ difficulty, diet }: { difficulty: DifficultyLevel, d
       elapsed = 0.0
   
       app.stage.addChild(game.catcher.sprite);
-  
+
       game.foodItems.forEach(item => {
         item.coordinates.y += game.options.itemSpeed
         item.setTexture()
@@ -87,7 +91,7 @@ export const startGame = ({ difficulty, diet }: { difficulty: DifficultyLevel, d
               htmlService.byId('points').innerText = String(game.score)
               htmlService.byId('level').innerText = String(game.level)
             } else {
-              game.catcher.removeHp()
+              game.subtractCatcherHp()
               htmlService.updateCatcherHps(game.catcher.hps)
             }
           }
@@ -96,5 +100,4 @@ export const startGame = ({ difficulty, diet }: { difficulty: DifficultyLevel, d
       prevCharPosition = game.catcher.coordinates.x
     }
   });
-  
-  }
+}

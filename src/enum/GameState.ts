@@ -1,5 +1,5 @@
 export enum GameState {
-  new,
+  ready,
   running,
   over
 }

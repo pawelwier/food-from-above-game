@@ -21,20 +21,15 @@ htmlService.renderRadioSelect({
   element: dietSelect, items: diets, title: 'diet' 
 })
 
-const readyToStart = () => (difficulty && diet)
+const readyToStart = (): boolean => !!difficulty && !!diet
 
-// TODO: extract as utils
 difficultySelect.addEventListener('change', () => { 
-  const levelElements = Array.from(document.getElementsByName("difficulty-level")) as HTMLInputElement[]
-  const selectedLevelId: string = levelElements.find(r => r.checked).value
-  difficulty = difficultyLevels.find(({ id }) => String(id) === selectedLevelId)
+  difficulty = htmlService.onMenuOnChange({ name: 'difficulty-level', data: difficultyLevels }) as DifficultyLevel
   if (readyToStart()) startButton.disabled = false
 })
 
 dietSelect.addEventListener('change', () => { 
-  const dietElements = Array.from(document.getElementsByName("diet")) as HTMLInputElement[]
-  const selectedDietId: string = dietElements.find(r => r.checked).value
-  diet = diets.find(({ id }) => String(id) === selectedDietId)
+  diet = htmlService.onMenuOnChange({ name: 'diet', data: diets }) as Diet
   if (readyToStart()) startButton.disabled = false
 })
 

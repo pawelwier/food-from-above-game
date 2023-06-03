@@ -1,5 +1,8 @@
+import { backToMenu } from "../backToMenu"
+import { Game } from "../game/Game"
 import { SelectableConfig } from "../interfaces/SelectableConfig"
-import { HtmlServiceInterface } from '../interfaces/services/HtmlService'
+import { HtmlServiceInterface } from '../interfaces/services/HtmlServiceInterface'
+import { startGame } from "../startGame"
 
 export class HtmlService implements HtmlServiceInterface {
   byId = (id: string): HTMLElement => document.getElementById(id)
@@ -26,5 +29,21 @@ export class HtmlService implements HtmlServiceInterface {
 
   updateCatcherHps(hps: number): void {
     this.byId('hps').innerText = this.parseHps(hps)
+  }
+
+  onGameOver(game: Game): void {
+    this.byId('game-over-frame').style.display = 'block'
+    this.byId('menu-button').addEventListener('click', () => {
+      backToMenu()
+    })
+    this.byId('restart-button').addEventListener('click', () => {
+      startGame({ difficulty: game.difficulty, diet: game.diet })
+    })
+  }
+
+  onMenuOnChange({ name, data }: { name: string, data: SelectableConfig[] }): SelectableConfig {
+    const elements = Array.from(document.getElementsByName(name)) as HTMLInputElement[]
+    const selectedLevelId: string = elements.find(r => r.checked).value
+    return data.find(({ id }) => String(id) === selectedLevelId)
   }
 }

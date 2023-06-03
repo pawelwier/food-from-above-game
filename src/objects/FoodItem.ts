@@ -1,8 +1,9 @@
 import { BaseTexture, Rectangle, Sprite, Texture } from "pixi.js";
 import { Coordinates } from "../types/Coordinates";
 import { Size } from "../types/Size";
+import { FoodItemInterface } from "../interfaces/FoodItemInterface";
 
-export class FoodItem {
+export class FoodItem implements FoodItemInterface {
   size: Size
   coordinates: Coordinates
   speed: number
@@ -13,14 +14,12 @@ export class FoodItem {
     this.coordinates = { x: itemX, y: 0 }
   }
 
-  createSprite(index: number) {
+  createSprite(index: number): void {
     const BASE_WIDTH = 128 // TODO: get from texture
     const colCount = BASE_WIDTH / this.size.width
 
     const y = Math.floor(index / colCount)
     const x = !y ? index : index % colCount
-
-    console.log({index, x, y})
     
     const rect = new Rectangle(x * this.size.width, y * this.size.height, this.size.width, this.size.height)
     const foodBase = new BaseTexture('food/food.png')
@@ -28,7 +27,7 @@ export class FoodItem {
     this.sprite = new Sprite(food)
   }
 
-  setTexture() {
+  setTexture(): void {
     this.sprite.x = this.coordinates.x
     this.sprite.y = this.coordinates.y
   }
