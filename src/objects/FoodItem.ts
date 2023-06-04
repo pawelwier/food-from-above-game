@@ -36,4 +36,8 @@ export class FoodItem implements FoodItemInterface {
     this.sprite.x = this.coordinates.x
     this.sprite.y = this.coordinates.y
   }
+
+  remove (): void {
+    this.sprite.destroy()
+  }
 }

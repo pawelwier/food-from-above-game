@@ -12,6 +12,7 @@ export interface GameInterface {
   diet: Diet
   caughtItemCount: number
   totalItemCount: number
+  canFlash: boolean
 
   addKeyListeners: () => void
   addFoodItem: (diet: Diet) => void
@@ -19,6 +20,7 @@ export interface GameInterface {
   checkNewLevel: () => void
   checkAddHp: () => void
   onItemCaught: () => void
+  onItemLost: () => void
   removeItem: ({ item, caught }: { item: FoodItem, caught: boolean }) => void
   subtractCatcherHp: () => void
   isState: (state: GameState) => boolean

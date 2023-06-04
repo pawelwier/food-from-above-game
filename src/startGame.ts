@@ -58,7 +58,6 @@ export const startGame = async ({ difficulty, diet }: { difficulty: DifficultyLe
         if (caught || game.itemLost(item)) {
           app.stage.removeChild(item.sprite)
           game.removeItem({ item, caught })
-          game.handleItemOut(caught)
         }
       })
 

@@ -26,6 +26,7 @@ export class Game implements GameInterface {
   itemTextures: BaseTexture
   caughtItemCount: number
   totalItemCount: number
+  canFlash: boolean
 
   constructor (
     gameOptions: GameOptions,
@@ -48,6 +49,7 @@ export class Game implements GameInterface {
     this.difficulty = difficultyLevel
     this.diet = selectedDiet
     this.keyPressed = {}
+    this.canFlash = true
 
     this.addKeyListeners()
   }
@@ -84,6 +86,8 @@ export class Game implements GameInterface {
     this.options.newLevel()
     this.caughtThisLevel = 0
     this.checkAddHp()
+    this.canFlash = true
+    this.htmlService.onToggleFlash(true)
   }
 
   checkAddHp (): void {
@@ -97,11 +101,20 @@ export class Game implements GameInterface {
     this.addToScore()
     this.caughtThisLevel++
     this.checkNewLevel()
+    this.caughtItemCount = (this.level - 1) * this.itemsPerLevel + this.caughtThisLevel
+    this.htmlService.byId('points').innerText = String(this.score)
+    this.htmlService.byId('level').innerText = String(this.level)
+  }
+
+  onItemLost (): void {
+    this.subtractCatcherHp()
+    this.htmlService.updateCatcherHps(this.catcher.hps)
   }
 
   removeItem ({ item, caught }: { item: FoodItem, caught: boolean }): void {
     this.foodItems = this.foodItems.filter(({ index }) => index !== item.index)
-    if (caught) this.onItemCaught()
+    this.handleItemOut(caught)
+    item.remove()
   }
 
   subtractCatcherHp (): void {
@@ -123,6 +136,7 @@ export class Game implements GameInterface {
   listenToKeyEvents (): void {
     if (this.keyPressed.ArrowRight) { this.catcher.moveX(this.catcher.coordinates.x + this.catcher.speed, this.options.width) }
     if (this.keyPressed.ArrowLeft) { this.catcher.moveX(this.catcher.coordinates.x - this.catcher.speed, this.options.width) }
+    if (this.keyPressed.Space) { this.flash() }
   }
 
   checkCollision (item: FoodItem): boolean {
@@ -138,19 +152,22 @@ export class Game implements GameInterface {
   }
 
   handleItemOut (caught: boolean): void {
-    if (caught) {
-      this.caughtItemCount = (this.level - 1) * this.itemsPerLevel + this.caughtThisLevel
-      this.htmlService.byId('points').innerText = String(this.score)
-      this.htmlService.byId('level').innerText = String(this.level)
-    } else {
-      this.subtractCatcherHp()
-      this.htmlService.updateCatcherHps(this.catcher.hps)
-    }
+    caught ? this.onItemCaught() : this.onItemLost()
   }
 
   async loadBaseTexture (): Promise<void> {
     const textureSrc = 'food/food.png'
     await Assets.load(textureSrc)
     this.itemTextures = BaseTexture.from(textureSrc)
+  }
+
+  flash (): void {
+    if (!this.canFlash) return
+    this.canFlash = false
+    this.htmlService.onToggleFlash(false)
+    this.htmlService.onFlash()
+    this.foodItems.forEach(item => {
+      this.removeItem({ item, caught: true })
+    })
   }
 }

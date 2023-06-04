@@ -1,6 +1,7 @@
 :root {
   --primary-color: #a83c0d;
-  --secondary-color: #204a15
+  --secondary-color: #204a15;
+  --flash-color: #2455db;
 }
 
 body {
@@ -68,6 +69,11 @@ button:disabled {
   color:#c92347  
 }
 
+#flash {
+  font-size: 1.8rem;
+  color: var(--flash-color);
+}
+
 #main-container {
   position: relative;
 }
@@ -96,6 +102,23 @@ button:disabled {
   padding: 0.6rem 2.5rem;
 }
 
+#hps-flash {
+  display: flex;
+  gap: 0.6rem
+}
+
+#game-stats-container {
+  display: grid;
+  grid-template-columns: 10rem 15rem 7rem;
+  gap: 2.3rem;
+}
+
+#game-stats-container div {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem
+}
+
 .main-stats {
   font-size: 2.4rem;
 }
@@ -114,18 +137,6 @@ button:disabled {
   margin-left: -1.3rem;
 }
 
-#game-stats-container {
-  display: grid;
-  grid-template-columns: 10rem 13rem 7rem;
-  gap: 3rem;
-}
-
-#game-stats-container div {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem
-}
-
 .game-stats {
   text-transform: uppercase;
 }
@@ -139,4 +150,17 @@ button:disabled {
   background-color: #fff;
   z-index: 99;
   padding: 1rem;
+}
+
+.flash-screen {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--flash-color);
+  color: #f5ef40;
+  opacity: 0.4;
+  font-size: 5rem;
+  text-transform: uppercase;
+  z-index: 2;
 }

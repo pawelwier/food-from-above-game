@@ -12,6 +12,20 @@ import { BASE } from '../configs/base'
 export class HtmlService implements HtmlServiceInterface {
   byId = (id: string): HTMLElement => document.getElementById(id)
 
+  renderApp (): Application<ICanvas> {
+    const app = new Application<HTMLCanvasElement>({
+      width: BASE.screenWidth,
+      height: BASE.screenHeight,
+      antialias: true,
+      resolution: 1,
+      backgroundAlpha: 0.1
+    })
+
+    document.body.appendChild(app.view)
+
+    return app
+  }
+
   renderRadioSelect ({ element, items, title }: {
     element: HTMLElement
     items: SelectableConfig[]
@@ -97,6 +111,7 @@ export class HtmlService implements HtmlServiceInterface {
     this.byId('game-stats-container').style.display = 'grid'
     this.byId('points').innerText = String(BASE.initScore)
     this.byId('level').innerText = String(BASE.initLevel)
+    this.byId('flash').style.visibility = 'visible'
     this.byId('hps').innerText = this.parseHps(game.difficulty.hps)
   }
 
@@ -108,17 +123,17 @@ export class HtmlService implements HtmlServiceInterface {
     this.byId('pre-game-menu').style.display = 'flex'
   }
 
-  renderApp (): Application<ICanvas> {
-    const app = new Application<HTMLCanvasElement>({
-      width: BASE.screenWidth,
-      height: BASE.screenHeight,
-      antialias: true,
-      resolution: 1,
-      backgroundAlpha: 0.1
-    })
+  onToggleFlash (show: boolean): void {
+    this.byId('flash').style.visibility = show ? 'visible' : 'hidden'
+  }
 
-    document.body.appendChild(app.view)
-
-    return app
+  onFlash (): void {
+    const flash: HTMLDivElement = this.byId('main-container').appendChild(document.createElement('div'))
+    flash.setAttribute('class', 'flash-screen')
+    flash.setAttribute('style', `width: ${BASE.screenWidth}px; height: ${BASE.screenHeight}px;`)
+    flash.innerText = '☇ Bang! ☇'
+    setTimeout(() => {
+      flash.remove()
+    }, 50)
   }
 }

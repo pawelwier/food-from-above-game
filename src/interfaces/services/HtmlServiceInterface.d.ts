@@ -3,6 +3,7 @@ import { type Game } from '../../game/Game'
 
 export interface HtmlServiceInterface {
   byId: (id: string) => HTMLElement
+  renderApp: () => Application<ICanvas>
   renderRadioSelect: ({ element, items, title }: {
     element: HTMLElement
     items: SelectableConfig[]
@@ -13,5 +14,7 @@ export interface HtmlServiceInterface {
   onGameOver: ({ score, level, items }: { score: number, level: number, items: number }) => void
   htmlInit: () => void
   onGameStart: (game: Game) => void
-  renderApp: () => Application<ICanvas>
+  backToMenu: () => void
+  onToggleFlash: (show: boolean) => void
+  onFlash: () => void
 }
