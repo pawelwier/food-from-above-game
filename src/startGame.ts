@@ -7,7 +7,7 @@ import { BASE } from './configs/base'
 import { HtmlService } from './services/HtmlService'
 import { GameState } from './enum/GameState'
 
-export const startGame = ({ difficulty, diet }: { difficulty: DifficultyLevel, diet: Diet }): void => {
+export const startGame = async ({ difficulty, diet }: { difficulty: DifficultyLevel, diet: Diet }): Promise<void> => {
   const htmlService = new HtmlService()
 
   const app = htmlService.renderApp()
@@ -16,6 +16,8 @@ export const startGame = ({ difficulty, diet }: { difficulty: DifficultyLevel, d
   const options = new GameOptions(BASE.screenWidth, BASE.screenHeight, speed, hps, pointsRatio)
   const catcher = new Character(options)
   const game = new Game(options, catcher, htmlService, difficulty, diet)
+
+  await game.loadBaseTexture()
 
   htmlService.onGameStart(game)
 

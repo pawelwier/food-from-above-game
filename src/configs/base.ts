@@ -10,5 +10,6 @@ export const BASE: BaseConfig = {
   initLevel: 1,
   frameCount: 5,
   itemInterval: 180,
-  frameInterval: 3
+  frameInterval: 3,
+  foodItemSize: { width: 16, height: 16 }
 }

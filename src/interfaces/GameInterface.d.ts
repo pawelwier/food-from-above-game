@@ -10,6 +10,8 @@ export interface GameInterface {
   htmlService: HtmlServiceInterface
   difficulty: DifficultyLevel
   diet: Diet
+  caughtItemCount: number
+  totalItemCount: number
 
   addKeyListeners: () => void
   addFoodItem: (diet: Diet) => void
@@ -24,6 +26,6 @@ export interface GameInterface {
   listenToKeyEvents: () => void
   checkCollision: (item: FoodItem) => boolean
   itemLost: (item: FoodItem) => boolean
-  caughtItemCount: () => number
   handleItemOut: (caught: boolean) => void
+  loadBaseTexture: () => Promise<void>
 }

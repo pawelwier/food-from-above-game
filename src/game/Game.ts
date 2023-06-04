@@ -1,3 +1,4 @@
+import { Assets, BaseTexture } from 'pixi.js'
 import { GameState } from '../enum/GameState'
 import { FoodItem } from '../objects/FoodItem'
 import { type Diet } from '../interfaces/Diet'
@@ -22,11 +23,22 @@ export class Game implements GameInterface {
   difficulty: DifficultyLevel
   diet: Diet
   keyPressed: Record<string, boolean>
+  itemTextures: BaseTexture
+  caughtItemCount: number
+  totalItemCount: number
 
-  constructor (gameOptions: GameOptions, character: Character, service: HtmlServiceInterface, difficultyLevel: DifficultyLevel, selectedDiet: Diet) {
+  constructor (
+    gameOptions: GameOptions,
+    character: Character,
+    service: HtmlServiceInterface,
+    difficultyLevel: DifficultyLevel,
+    selectedDiet: Diet
+  ) {
     this.score = 0
     this.level = 1
     this.caughtThisLevel = 0
+    this.caughtItemCount = 0
+    this.totalItemCount = 0
     this.itemsPerLevel = BASE.itemsPerLevel
     this.state = GameState.running
     this.foodItems = []
@@ -51,14 +63,15 @@ export class Game implements GameInterface {
   }
 
   addFoodItem (diet: Diet): void {
-    const itemAxis = getRandom({ max: this.options.width - 16 /* TODO: item width */ })
-    const foodItem = new FoodItem(itemAxis)
+    const itemAxis = getRandom({ max: this.options.width - BASE.foodItemSize.width })
+    const foodItem = new FoodItem(this, itemAxis, this.totalItemCount)
 
     const itemIndexList = diet.indexList
     const index = getRandom({ max: itemIndexList.length - 1 })
 
     foodItem.createSprite(itemIndexList[index])
     this.foodItems = [...this.foodItems, foodItem]
+    this.totalItemCount++
   }
 
   addToScore (): void {
@@ -86,8 +99,8 @@ export class Game implements GameInterface {
     this.checkNewLevel()
   }
 
-  removeItem ({ item, caught }: { item: FoodItem, caught: boolean }): void { // TODO: better way to find which item to remove
-    this.foodItems = this.foodItems.filter(({ coordinates }) => coordinates.x !== item.coordinates.x)
+  removeItem ({ item, caught }: { item: FoodItem, caught: boolean }): void {
+    this.foodItems = this.foodItems.filter(({ index }) => index !== item.index)
     if (caught) this.onItemCaught()
   }
 
@@ -104,7 +117,7 @@ export class Game implements GameInterface {
     this.state = GameState.over
     this.catcher.sprite.y += this.catcher.sprite.height
     this.catcher.sprite.rotation -= Math.PI / 2
-    this.htmlService.onGameOver({ score: this.score, level: this.level, items: this.caughtItemCount() })
+    this.htmlService.onGameOver({ score: this.score, level: this.level, items: this.caughtItemCount })
   }
 
   listenToKeyEvents (): void {
@@ -124,17 +137,20 @@ export class Game implements GameInterface {
     return item.coordinates.y > this.options.height - item.sprite.height
   }
 
-  caughtItemCount (): number {
-    return (this.level - 1) * this.itemsPerLevel + this.caughtThisLevel
-  }
-
   handleItemOut (caught: boolean): void {
     if (caught) {
+      this.caughtItemCount = (this.level - 1) * this.itemsPerLevel + this.caughtThisLevel
       this.htmlService.byId('points').innerText = String(this.score)
       this.htmlService.byId('level').innerText = String(this.level)
     } else {
       this.subtractCatcherHp()
       this.htmlService.updateCatcherHps(this.catcher.hps)
     }
+  }
+
+  async loadBaseTexture (): Promise<void> {
+    const textureSrc = 'food/food.png'
+    await Assets.load(textureSrc)
+    this.itemTextures = BaseTexture.from(textureSrc)
   }
 }

@@ -9,4 +9,5 @@ export interface BaseConfig {
   frameCount: number
   itemInterval: number
   frameInterval: number
+  foodItemSize: { width: number, height: number }
 }

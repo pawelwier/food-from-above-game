@@ -82,7 +82,9 @@ export class HtmlService implements HtmlServiceInterface {
       if (readyToStart()) startButton.disabled = false
     })
 
-    startButton.addEventListener('click', () => { startGame({ difficulty, diet }) })
+    startButton.addEventListener('click', () => {
+      startGame({ difficulty, diet }).catch(e => { console.error('Launching game failed', e) })
+    })
   }
 
   onGameStart (game: Game): void {
