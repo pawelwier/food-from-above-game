@@ -64,14 +64,14 @@ export class Game implements GameInterface {
     })
   }
 
-  addFoodItem (diet: Diet): void {
+  createFoodItem (): FoodItem {
     const itemAxis = getRandom({ max: this.options.width - BASE.foodItemSize.width })
-    const foodItem = new FoodItem(this, itemAxis, this.totalItemCount)
+    return new FoodItem(this, itemAxis, this.totalItemCount)
+  }
 
-    const itemIndexList = diet.indexList
-    const index = getRandom({ max: itemIndexList.length - 1 })
-
-    foodItem.createSprite(itemIndexList[index])
+  addFoodItem (diet: Diet): void {
+    const foodItem = this.createFoodItem()
+    foodItem.createSprite(diet)
     this.foodItems = [...this.foodItems, foodItem]
     this.totalItemCount++
   }
@@ -80,14 +80,19 @@ export class Game implements GameInterface {
     this.score += this.options.pointsPerCatch
   }
 
-  checkNewLevel (): void {
-    if (this.caughtThisLevel < this.itemsPerLevel) return
+  onNewLevel (): void {
     this.level++
     this.options.newLevel()
     this.caughtThisLevel = 0
     this.checkAddHp()
-    this.canFlash = true
-    this.htmlService.onToggleFlash(true)
+    setTimeout(() => {
+      this.canFlash = true
+      this.htmlService.onToggleFlash(true)
+    }, 300)
+  }
+
+  checkNewLevel (itemsCaught: number): boolean {
+    return itemsCaught >= this.itemsPerLevel
   }
 
   checkAddHp (): void {
@@ -100,8 +105,8 @@ export class Game implements GameInterface {
   onItemCaught (): void {
     this.addToScore()
     this.caughtThisLevel++
-    this.checkNewLevel()
-    this.caughtItemCount = (this.level - 1) * this.itemsPerLevel + this.caughtThisLevel
+    this.caughtItemCount++
+    if (this.checkNewLevel(this.caughtThisLevel)) this.onNewLevel()
     this.htmlService.byId('points').innerText = String(this.score)
     this.htmlService.byId('level').innerText = String(this.level)
   }
@@ -134,9 +139,9 @@ export class Game implements GameInterface {
   }
 
   listenToKeyEvents (): void {
-    if (this.keyPressed.ArrowRight) { this.catcher.moveX(this.catcher.coordinates.x + this.catcher.speed, this.options.width) }
-    if (this.keyPressed.ArrowLeft) { this.catcher.moveX(this.catcher.coordinates.x - this.catcher.speed, this.options.width) }
-    if (this.keyPressed.Space) { this.flash() }
+    if (this.keyPressed.ArrowRight) this.catcher.moveX(this.catcher.coordinates.x + this.catcher.speed, this.options.width)
+    if (this.keyPressed.ArrowLeft) this.catcher.moveX(this.catcher.coordinates.x - this.catcher.speed, this.options.width)
+    if (this.keyPressed.Space) this.flash()
   }
 
   checkCollision (item: FoodItem): boolean {
@@ -166,8 +171,6 @@ export class Game implements GameInterface {
     this.canFlash = false
     this.htmlService.onToggleFlash(false)
     this.htmlService.onFlash()
-    this.foodItems.forEach(item => {
-      this.removeItem({ item, caught: true })
-    })
+    this.foodItems.forEach(item => { this.removeItem({ item, caught: true }) })
   }
 }

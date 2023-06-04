@@ -5,7 +5,8 @@ export interface FoodItemInterface {
   sprite: Sprite
   index: number
 
-  createSprite: (index: number) => void
+  getSpriteIndex: (diet: Diet) => number
+  createSprite: (diet: Diet) => void
   setSpriteLocation: (speed: number) => void
   remove: () => void
 }

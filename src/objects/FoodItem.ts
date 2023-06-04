@@ -4,6 +4,8 @@ import { type Size } from '../types/Size'
 import { type FoodItemInterface } from '../interfaces/FoodItemInterface'
 import { type Game } from '../game/Game'
 import { BASE } from '../configs/base'
+import { getRandom } from '../utils'
+import { type Diet } from '../interfaces/Diet'
 
 export class FoodItem implements FoodItemInterface {
   game: Game
@@ -20,7 +22,14 @@ export class FoodItem implements FoodItemInterface {
     this.index = i
   }
 
-  createSprite (index: number): void {
+  getSpriteIndex (diet: Diet): number {
+    const itemIndexList = diet.indexList
+    const index = getRandom({ max: itemIndexList.length - 1 })
+    return itemIndexList[index]
+  }
+
+  createSprite (diet: Diet): void {
+    const index = this.getSpriteIndex(diet)
     const colCount = this.game.itemTextures.width / this.size.width
 
     const y = Math.floor(index / colCount)

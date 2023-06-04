@@ -17,7 +17,8 @@ export interface GameInterface {
   addKeyListeners: () => void
   addFoodItem: (diet: Diet) => void
   addToScore: () => void
-  checkNewLevel: () => void
+  onNewLevel: () => void
+  checkNewLevel: (itemsCaught: number) => boolean
   checkAddHp: () => void
   onItemCaught: () => void
   onItemLost: () => void

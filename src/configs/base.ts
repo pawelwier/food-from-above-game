@@ -9,7 +9,7 @@ export const BASE: BaseConfig = {
   initScore: 0,
   initLevel: 1,
   frameCount: 5,
-  itemInterval: 180,
+  itemInterval: 100,
   frameInterval: 3,
   foodItemSize: { width: 16, height: 16 }
 }
