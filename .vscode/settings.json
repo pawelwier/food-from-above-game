@@ -4,5 +4,4 @@
   },
   "eslint.validate": ["javascript"],
   "eslint.workingDirectories": [{ "mode": "auto" }]
-  // "javascript.format.insertSpaceBeforeFunctionParenthesis": false
  }

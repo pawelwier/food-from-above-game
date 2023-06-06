@@ -35,8 +35,8 @@ export class Game implements GameInterface {
     difficultyLevel: DifficultyLevel,
     selectedDiet: Diet
   ) {
-    this.score = 0
-    this.level = 1
+    this.score = BASE.initScore
+    this.level = BASE.initLevel
     this.caughtThisLevel = 0
     this.caughtItemCount = 0
     this.totalItemCount = 0
@@ -133,7 +133,7 @@ export class Game implements GameInterface {
 
   gameOver (): void {
     this.state = GameState.over
-    this.catcher.sprite.y += this.catcher.sprite.height
+    this.catcher.sprite.y += this.catcher.sprite.height * 1.2
     this.catcher.sprite.rotation -= Math.PI / 2
     this.htmlService.onGameOver({ score: this.score, level: this.level, items: this.caughtItemCount })
   }
@@ -161,9 +161,8 @@ export class Game implements GameInterface {
   }
 
   async loadBaseTexture (): Promise<void> {
-    const textureSrc = 'food/food.png'
-    await Assets.load(textureSrc)
-    this.itemTextures = BaseTexture.from(textureSrc)
+    await Assets.load(BASE.baseTexture)
+    this.itemTextures = BaseTexture.from(BASE.baseTexture)
   }
 
   flash (): void {

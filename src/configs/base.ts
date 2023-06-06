@@ -11,5 +11,6 @@ export const BASE: BaseConfig = {
   frameCount: 5,
   itemInterval: 100,
   frameInterval: 3,
-  foodItemSize: { width: 16, height: 16 }
+  foodItemSize: { width: 16, height: 16 },
+  baseTexture: 'food/food.png'
 }

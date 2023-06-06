@@ -10,4 +10,5 @@ export interface BaseConfig {
   itemInterval: number
   frameInterval: number
   foodItemSize: { width: number, height: number }
+  baseTexture: string
 }

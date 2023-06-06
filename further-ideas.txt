@@ -1,0 +1,5 @@
+1. Dodawanie kolejnych diet i poziomów trudności, edycja istniejących - zmiana wartości w tablicach obiektów w plikach w folderze configs
+2. Dodać dźwięki :) szczególnie "wzzzzt" do użycia Super Mocy
+3. Zapisywanie najlepszych wyników + największej liczby złapanych owoców (localstorage lub w bazie danych)
+4. Specjalne nagrody i kary za niektóre elementy jedzenie - gra szuka po indeksie w przefiltrowanych rezultatach więc można łatwo przypisać do indeksów
+5. Dodać opcję pauzy

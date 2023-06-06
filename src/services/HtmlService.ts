@@ -129,7 +129,7 @@ export class HtmlService implements HtmlServiceInterface {
 
   onFlash (): void {
     const flash: HTMLDivElement = this.byId('main-container').appendChild(document.createElement('div'))
-    flash.setAttribute('class', 'flash-screen')
+    flash.setAttribute('class', 'flash-screen container-center uppercase')
     flash.setAttribute('style', `width: ${BASE.screenWidth}px; height: ${BASE.screenHeight}px;`)
     flash.innerText = '☇ Bang! ☇'
     setTimeout(() => {
